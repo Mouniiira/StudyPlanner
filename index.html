@@ -16,15 +16,23 @@
   <a href="settings.html">Settings</a>
 </div>
 
-<!-- Use any element to open the sidenav -->
 <span class="burger" onclick="openNav()">☰</span>
 
-<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 <div id="main">
   <h1>user's dahsboard</h1>
   <button>Timer</button>
 </div>
 
+ <div class="todo-box">
+    <h3>To do list</h3>
+
+    <div class="todo-input">
+      <input type="text" id="taskInput" placeholder="Add task">
+      <button id="addBtn">+</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
 
 <script src="script.js"></script>
 </body>
