@@ -1,10 +1,12 @@
 // SIDENAV
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
 }
 
 // TODO LIST
@@ -14,14 +16,41 @@ const list = document.getElementById("taskList");
 
 addBtn.addEventListener("click", addTask);
 
+window.onload = function () {
+  loadTasks();
+};
+
+function saveTasks() {
+  const tasks = [];
+  document.querySelectorAll("#taskList li").forEach(li => {
+    tasks.push({
+      text: li.querySelector("span").textContent,
+      completed: li.classList.contains("completed")
+    });
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.forEach(task => createTask(task.text, task.completed));
+}
+
 function addTask() {
   const text = input.value.trim();
   if (!text) return;
 
+  createTask(text, false);
+  input.value = "";
+  saveTasks();
+}
+
+function createTask(text, completed) {
   const li = document.createElement("li");
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
+  checkbox.checked = completed;
 
   const span = document.createElement("span");
   span.textContent = text;
@@ -30,23 +59,25 @@ function addTask() {
   del.textContent = "✖";
   del.className = "delete-btn";
 
+  if (completed) li.classList.add("completed");
+
   checkbox.addEventListener("change", () => {
     li.classList.toggle("completed");
+    saveTasks();
   });
 
   del.addEventListener("click", () => {
     li.remove();
+    saveTasks();
   });
 
   li.appendChild(checkbox);
   li.appendChild(span);
   li.appendChild(del);
-
   list.appendChild(li);
-  input.value = "";
 }
 
-// TIMER (Pomodoro-style default 25 min)
+// TIMER 
 let time = 1500;
 let interval = null;
 
@@ -70,6 +101,10 @@ function startTimer() {
     time--;
     updateDisplay();
   }, 1000);
+}
+
+function pauseTimer() {
+
 }
 
 function resetTimer() {
