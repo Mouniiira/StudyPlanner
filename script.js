@@ -78,43 +78,90 @@ function createTask(text, completed) {
 }
 
 // TIMER 
-let time = 1500;
-let interval = null;
+let timer = null;
+let time = 0;
+let isStudy = true;
+let studyDuration = 0;
+let breakDuration = 0;
+
+const modeSelect = document.getElementById("mode");
+const customInputs = document.getElementById("customInputs");
+const controls = document.getElementById("controls");
+const display = document.getElementById("timeDisplay");
+
+modeSelect.addEventListener("change", () => {
+  if (modeSelect.value === "custom") {
+    customInputs.style.display = "block";
+  } else {
+    customInputs.style.display = "none";
+  }
+
+  setupTimer();
+});
+
+function setupTimer() {
+  if (modeSelect.value === "pomodoro") {
+    studyDuration = 25 * 60;
+    breakDuration = 5 * 60;
+  } else if (modeSelect.value === "custom") {
+    const s = document.getElementById("studyTime").value;
+    const b = document.getElementById("breakTime").value;
+
+    if (!s || !b) return;
+
+    studyDuration = s * 60;
+    breakDuration = b * 60;
+  } else {
+    return;
+  }
+
+  time = studyDuration;
+  isStudy = true;
+  updateDisplay();
+
+  controls.style.display = "block";
+}
 
 function updateDisplay() {
   const min = Math.floor(time / 60);
   const sec = time % 60;
-  document.getElementById("timeDisplay").textContent =
+  display.textContent =
     `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
 function startTimer() {
-  if (interval) return;
+  if (timer) return;
 
-  interval = setInterval(() => {
+  timer = setInterval(() => {
     if (time <= 0) {
-      clearInterval(interval);
-      interval = null;
-      alert("Time's up");
-      return;
+      if (isStudy) {
+        time = breakDuration;
+        isStudy = false;
+        alert("Break time");
+      } else {
+        time = studyDuration;
+        isStudy = true;
+        alert("Study time");
+      }
+    } else {
+      time--;
     }
-    time--;
+
     updateDisplay();
   }, 1000);
 }
 
 function pauseTimer() {
-
+  clearInterval(timer);
+  timer = null;
 }
 
-function resetTimer() {
-  clearInterval(interval);
-  interval = null;
-  time = 1500;
+function stopTimer() {
+  clearInterval(timer);
+  timer = null;
+  time = 0;
   updateDisplay();
 }
-
-updateDisplay();
 
 // PLAYLIST LOADER
 function loadPlaylist() {
