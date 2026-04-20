@@ -102,6 +102,7 @@ li.completed span {
   color: gray;
 }
 
+/* Playlist box */
 .playlist {
   position: fixed;
   width: 260px;
