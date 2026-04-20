@@ -22,8 +22,11 @@
   <h1>user's dahsboard</h1>
 
   <div class="timer">
-    <h3>Timer</h3>
-  </div>
+  <h3>Timer</h3>
+  <div id="timeDisplay">25:00</div>
+  <button onclick="startTimer()">Start</button>
+  <button onclick="resetTimer()">Reset</button>
+</div>
 
  <div class="todo-box">
     <h3>To do list</h3>
@@ -37,10 +40,12 @@
   </div>
 
   <div class="playlist">
-      <h3>My Playlist</h3>
-      <input type="link" id="linkInput" placeholder="Paste link">
-      <button></button>
-  </div>
+  <h3>My Playlist</h3>
+  <input type="text" id="linkInput" placeholder="Paste playlist link">
+  <button onclick="loadPlaylist()">Load</button>
+
+  <div id="player"></div>
+</div>
 
 </div>
 
