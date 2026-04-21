@@ -1,12 +1,10 @@
 // SIDENAV
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("main").style.marginLeft = "0";
 }
 
 // TODO LIST
@@ -78,6 +76,25 @@ function createTask(text, completed) {
 }
 
 // TIMER 
+
+function populatePickers() {
+  const study = document.getElementById("studyTime");
+  const brk = document.getElementById("breakTime");
+
+  for (let i = 1; i <= 60; i++) {
+    const opt1 = document.createElement("option");
+    opt1.value = i;
+    opt1.textContent = i + " min";
+
+    const opt2 = opt1.cloneNode(true);
+
+    study.appendChild(opt1);
+    brk.appendChild(opt2);
+  }
+}
+
+populatePickers();
+
 let timer = null;
 let time = 0;
 let isStudy = true;
@@ -89,28 +106,48 @@ const customInputs = document.getElementById("customInputs");
 const controls = document.getElementById("controls");
 const display = document.getElementById("timeDisplay");
 
+const studyInput = document.getElementById("studyTime");
+const breakInput = document.getElementById("breakTime");
+
 modeSelect.addEventListener("change", () => {
   if (modeSelect.value === "custom") {
     customInputs.style.display = "block";
   } else {
     customInputs.style.display = "none";
   }
-
   setupTimer();
 });
+
+studyTime.addEventListener("change", handlePickerChange);
+breakTime.addEventListener("change", handlePickerChange);
+
+function handlePickerChange() {
+  if (modeSelect.value !== "custom") return;
+
+  const s = parseInt(studyTime.value);
+  const b = parseInt(breakTime.value);
+
+  if (!s || !b) {
+    controls.style.display = "none";
+    return;
+  }
+
+  studyDuration = s * 60;
+  breakDuration = b * 60;
+
+  if (!timer) {
+    time = studyDuration;
+    isStudy = true;
+    updateDisplay();
+  }
+
+  controls.style.display = "block";
+}
 
 function setupTimer() {
   if (modeSelect.value === "pomodoro") {
     studyDuration = 25 * 60;
     breakDuration = 5 * 60;
-  } else if (modeSelect.value === "custom") {
-    const s = document.getElementById("studyTime").value;
-    const b = document.getElementById("breakTime").value;
-
-    if (!s || !b) return;
-
-    studyDuration = s * 60;
-    breakDuration = b * 60;
   } else {
     return;
   }
@@ -131,6 +168,9 @@ function updateDisplay() {
 
 function startTimer() {
   if (timer) return;
+
+  document.getElementById("customInputs").style.display = "none";
+  modeSelect.style.display = "none";
 
   timer = setInterval(() => {
     if (time <= 0) {
@@ -161,6 +201,12 @@ function stopTimer() {
   timer = null;
   time = 0;
   updateDisplay();
+
+  modeSelect.style.display = "block";
+
+  if (modeSelect.value === "custom") {
+    document.getElementById("customInputs").style.display = "flex";
+  }
 }
 
 // PLAYLIST LOADER
@@ -172,25 +218,21 @@ function loadPlaylist() {
 
   let embed = "";
 
-  // Spotify
   if (link.includes("spotify.com")) {
     const id = link.split("playlist/")[1]?.split("?")[0];
     embed = `<iframe src="https://open.spotify.com/embed/playlist/${id}"></iframe>`;
   }
 
-  // YouTube playlist
   else if (link.includes("youtube.com") || link.includes("youtu.be")) {
     const id = link.split("list=")[1];
     embed = `<iframe src="https://www.youtube.com/embed/videoseries?list=${id}" allow="autoplay"></iframe>`;
   }
 
-  // Deezer
   else if (link.includes("deezer.com")) {
     const id = link.split("playlist/")[1];
     embed = `<iframe src="https://widget.deezer.com/widget/dark/playlist/${id}"></iframe>`;
   }
 
-  // Apple Music (basic embed)
   else if (link.includes("music.apple.com")) {
     embed = `<iframe src="${link.replace("music.apple.com", "embed.music.apple.com")}"></iframe>`;
   }
