@@ -30,9 +30,16 @@
     <option value="custom">Custom</option>
   </select>
 
-  <div id="customInputs" style="display:none;">
-    <input type="number" id="studyTime" placeholder="Study (min)">
-    <input type="number" id="breakTime" placeholder="Break (min)">
+  <div id="customInputs" class="picker-container" style="display:none;">
+    <div>
+      <label>Study</label>
+      <select id="studyTime"></select>
+    </div>
+
+    <div>
+      <label>Break</label>
+      <select id="breakTime"></select>
+    </div>
   </div>
 
   <div id="timeDisplay">00:00</div>
