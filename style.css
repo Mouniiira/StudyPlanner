@@ -48,15 +48,114 @@ body {
 
 /* Timer */
 .timer {
-  top: 10px;
-  width: 260px;
-  max-height: 350px;
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
   background: #f4f4f4;
   border: 1px solid #4A90E2;
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+/* Picker container */
+.picker-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.picker-container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Modern select (scroll feel) */
+select {
+  appearance: none;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Wheel container */
+.wheel-wrapper {
+  display: flex;
+  justify-content: space-around;
+  margin: 15px 0;
+}
+
+.wheel {
+  width: 100px;
+  height: 120px;
   overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  position: relative; 
+}
+
+.wheel div {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+}
+
+.wheel::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  margin-top: 40px;
+  border-top: 2px solid #4A90E2;
+  border-bottom: 2px solid #4A90E2;
+  pointer-events: none;
+}
+
+.wheel::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  border-top: 2px solid #4A90E2;
+  border-bottom: 2px solid #4A90E2;
+  pointer-events: none;
+}
+
+#timeDisplay {
+  font-size: 30px;
+  margin: 10px 0;
+}
+
+.btn {
+  padding: 8px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  background: #e0e0e0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn {
+  background: rgba(0,0,0,0.15);
+  color: white;
 }
 
 #timeDisplay {
@@ -143,7 +242,6 @@ input[type="checkbox"] {
 /* Playlist box */
 .playlist {
   position: fixed;
-  top: 300px;
   width: 260px;
   max-height: 350px;
   background: #f4f4f4;
@@ -157,6 +255,17 @@ input[type="checkbox"] {
 .playlist h3 {
   margin-top: 0;
   text-align: center;
+}
+
+.playlist button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #4A90E2;
+  color: white;
+  cursor: pointer;
 }
 
 #player iframe {
