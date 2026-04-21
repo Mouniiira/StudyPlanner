@@ -85,53 +85,53 @@ select {
   cursor: pointer;
 }
 
-/* Wheel container */
-.wheel-wrapper {
-  display: flex;
-  justify-content: space-around;
-  margin: 15px 0;
-}
-
 .wheel {
   width: 100px;
-  height: 120px;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  border-radius: 10px;
-  background: white;
-  border: 1px solid #ccc;
-  position: relative; 
+  height: 160px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  background: #ffffff;
+  position: relative;
 }
 
-.wheel div {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  scroll-snap-align: center;
+.wheel::-webkit-scrollbar {
+  display: none;
+}
+
+/* CENTER HIGHLIGHT BAR (like iPhone) */
+.wheel::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  pointer-events: none;
 }
 
 .wheel::before {
   content: "";
   position: absolute;
-  width: 100px;
-  height: 40px;
-  margin-top: 40px;
-  border-top: 2px solid #4A90E2;
-  border-bottom: 2px solid #4A90E2;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17,17,17,0.9) 0%,
+    rgba(17,17,17,0.5) 20%,
+    rgba(17,17,17,0) 40%,
+    rgba(17,17,17,0) 60%,
+    rgba(17,17,17,0.5) 80%,
+    rgba(17,17,17,0.9) 100%
+  );
   pointer-events: none;
+  z-index: 2;
 }
 
-.wheel::after {
-  content: "";
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  border-top: 2px solid #4A90E2;
-  border-bottom: 2px solid #4A90E2;
-  pointer-events: none;
+.wheel div {
+  position: relative;
+  z-index: 1;
 }
 
 #timeDisplay {
